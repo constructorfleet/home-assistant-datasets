@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "entity-power.v0.schema.json",
+    "type": "object",
+    "required": [
+        "tool_call"
+    ],
+    "properties": {
+        "tool_call": {
+            "type": "object",
+            "required": [
+                "name",
+                "arguments"
+            ],
+            "properties": {
+                "name": {
+                    "const": "entity-power"
+                },
+                "arguments": {
+                    "type": "object",
+                    "required": [
+                        "entity_id",
+                        "state"
+                    ],
+                    "properties": {
+                        "entity_id": {
+                            "type": "string"
+                        },
+                        "state": {
+                            "enum": [
+                                "on",
+                                "off"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,11 @@
+{
+    "name": "play-media.v0",
+    "parameters": {
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "title"
+    ]
+}
