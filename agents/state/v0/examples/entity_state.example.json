@@ -1,0 +1,11 @@
+{
+  "schema_version": "entity_state.v0",
+  "entities": {
+    "media_player.living_room": {
+      "present": true,
+      "power": "on",
+      "input": null,
+      "media_title": null
+    }
+  }
+}
