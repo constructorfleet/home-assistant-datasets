@@ -1,117 +1,250 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "home_ontology.v0",
+    "$id": "home_ontology.v0.schema.json",
     "type": "object",
     "required": [
         "schema_version",
+        "people",
+        "pets",
         "floors"
     ],
     "properties": {
         "schema_version": {
             "type": "string",
-            "const": "home_ontology.v0"
+            "const": "home_ontology_v0"
+        },
+        "people": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/person"
+            },
+            "default": []
+        },
+        "pets": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/pet"
+            },
+            "default": []
         },
         "floors": {
             "type": "array",
             "minItems": 1,
             "items": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "rooms"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "rooms": {
-                        "type": "array",
-                        "minItems": 1,
-                        "items": {
-                            "type": "object",
-                            "required": [
-                                "id",
-                                "name",
-                                "aliases",
-                                "devices"
-                            ],
-                            "properties": {
-                                "id": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                },
-                                "aliases": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                },
-                                "devices": {
-                                    "type": "array",
-                                    "minItems": 1,
-                                    "items": {
-                                        "type": "object",
-                                        "required": [
-                                            "id",
-                                            "type",
-                                            "aliases",
-                                            "capabilities",
-                                            "entities"
-                                        ],
-                                        "properties": {
-                                            "id": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            },
-                                            "aliases": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "capabilities": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "entities": {
-                                                "type": "object",
-                                                "additionalProperties": {
-                                                    "type": "object",
-                                                    "required": [
-                                                        "unit"
-                                                    ],
-                                                    "properties": {
-                                                        "unit": {
-                                                            "type": [
-                                                                "string",
-                                                                "null"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    }
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    }
-                },
-                "additionalProperties": false
+                "$ref": "#/$defs/floor"
             }
         }
     },
-    "additionalProperties": false
+    "additionalProperties": false,
+    "$defs": {
+        "named": {
+            "type": "object",
+            "required": [
+                "id",
+                "names"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "names": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "person": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "roles": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "capabilities": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": [
+                                "presence"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "pet": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "species"
+                    ],
+                    "properties": {
+                        "species": {
+                            "type": "string"
+                        },
+                        "capabilities": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": [
+                                "presence"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "floor": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "areas"
+                    ],
+                    "properties": {
+                        "areas": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "$ref": "#/$defs/area"
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "area": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "weight",
+                        "devices"
+                    ],
+                    "properties": {
+                        "weight": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "devices": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/device"
+                            },
+                            "default": []
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "device": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "type",
+                        "entities"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "High-level device category (media_player, light, switch, etc.)"
+                        },
+                        "entities": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "$ref": "#/$defs/entity"
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "entity": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/named"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "capabilities",
+                        "attributes"
+                    ],
+                    "properties": {
+                        "capabilities": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "Actions that can be performed on this entity"
+                        },
+                        "attributes": {
+                            "type": "object",
+                            "minProperties": 1,
+                            "additionalProperties": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "boolean",
+                                            "enum"
+                                        ]
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "unit": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        }
+    }
 }
